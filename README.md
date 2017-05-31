@@ -35,7 +35,7 @@ The following is a sample drone-kubernetes configuration in your
 pipeline:
   deploy:
     image: dgksu/drone-kubernetes
-    # specify tocken and certificate authority as base 64 encoded strings:
+    # specify token and certificate authority as base 64 encoded strings:
     # cat ca.crt | base64 -w 0
     token: AAABBBBCCC
     ca: AAABBBBCCC
@@ -47,7 +47,7 @@ pipeline:
         target: plugin_token
     server: https://cluster1.example.com:443
     file: deployment.yaml 
-    debug: 1 
+    debug: true 
     context:
       replicas: 3
       host: example.com
