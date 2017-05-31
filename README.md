@@ -4,7 +4,7 @@ The following parameters are used to configuration the plugin's behavior:
 
 * **token** - base64 encoded kubernetes token (required)
 * **ca** - base64 encoded kubernetes certificate authority (required)
-* **server** - kubernetes api server (default `kubernetes.default.svc.cluster.local`)
+* **server** - kubernetes api server (default `https://kubernetes.default.svc.cluster.local:443`)
 * **file** - path to kubernetes template file, default `kubernetes.yaml`
 * **debug** - make plugin more verbose
 * **context** - dictionary of additional template variables.
@@ -35,11 +35,17 @@ The following is a sample drone-kubernetes configuration in your
 pipeline:
   deploy:
     image: dgksu/drone-kubernetes
+    # specify tocken and certificate authority as base 64 encoded strings:
+    # cat ca.crt | base64 -w 0
     token: AAABBBBCCC
     ca: AAABBBBCCC
     # or use secrets:
-    
-    server: cluster1.example.com
+    secrets:
+      - source: kubernetes_ca
+        target: plugin_ca
+      - source: kubernetes_token
+        target: plugin_token
+    server: https://cluster1.example.com:443
     file: deployment.yaml 
     debug: 1 
     context:

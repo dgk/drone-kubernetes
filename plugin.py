@@ -46,7 +46,7 @@ def main():
     """
     arg_parser = configargparse.ArgParser()
     arg_parser.add('-s', '--server',
-                   default='kubernetes.default.svc.cluster.local',
+                   default='https://kubernetes.default.svc.cluster.local:443',
                    help='kubernetes server address', env_var='PLUGIN_SERVER')
 
     arg_parser.add('-t', '--token', required=True,
