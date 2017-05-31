@@ -3,6 +3,7 @@
 kubernetes deploy plugin
 """
 import base64
+import datetime
 import json
 import logging
 import os
@@ -38,6 +39,14 @@ def run(cmd):
 def fatal(msg):
     logger.fatal(msg)
     sys.exit(1)
+
+
+def prepare_jinja_environment(environment):
+    def datetimeformat(value, format='%Y-%m-%d %H:%M:%S'):
+        value = int(value)
+        return datetime.datetime.fromtimestamp(value).strftime(format)
+
+    environment.filters['datetimeformat'] = datetimeformat
 
 
 def main():
@@ -148,9 +157,9 @@ def main():
 
     logger.debug('rendering context: {}'.format(context))
 
-    template = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.join(options.workspace, path))
-    ).get_template(filename)
+    environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.join(options.workspace, path)))
+    prepare_jinja_environment(environment)
+    template = environment.get_template(filename)
 
     rendered = template.render(context)
     logger.debug('rendered template:\n{}'.format(rendered))
